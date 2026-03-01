@@ -2,8 +2,9 @@
 #
 # Talon Voice module which supports relative mouse pointer movements.
 #
-# Currently these include movements in radial directions relative to the
-# current mouse pointer position.
+# These include movements in radial directions relative to the
+# current mouse pointer position and also movements to virtual grid cell
+# locations that are based on the size of the main screen.
 
 -
 
@@ -25,16 +26,6 @@ roam <user.screen_direction>:
 # Example: roam left 50 pixels
 roam <user.screen_direction> ([<number> [pixels]]):
     user.mouse_move_by_direction(user.screen_direction, number)
-    user.mouse_show_cursor()
-
-
-#-- Move using Nudge, Step, Hop, Skip, Jump and Screen Directions
-
-# Example: nudge right
-# Example: step up
-# Example: jump left
-<user.motion_distance_descriptor> <user.screen_direction>:
-    user.mouse_move_by_direction(user.screen_direction, user.motion_distance_descriptor)
     user.mouse_show_cursor()
 
 
@@ -63,3 +54,35 @@ roam <user.compass_direction> ([<number> [pixels]]):
     user.mouse_move_by_direction(user.compass_direction, number)
     user.mouse_show_cursor()
 
+
+#-- Move using Nudge, Step, Hop, Skip, Jump verbs
+
+#--- Move using verbs in Screen Directions
+# Example: jump left
+<user.motion_distance_descriptor> <user.screen_direction>:
+    user.mouse_move_by_direction(user.screen_direction, user.motion_distance_descriptor)
+    user.mouse_show_cursor()
+
+#--- Move using verbs in Compass Directions
+# Example: nudge north
+<user.motion_distance_descriptor> <user.compass_direction>:
+    user.mouse_move_by_direction(user.compass_direction, user.motion_distance_descriptor)
+    user.mouse_show_cursor()
+
+#--- Move using verbs Clock Directions
+# Example: skip 3 o'clock
+<user.motion_distance_descriptor> <user.clocktime_direction> o'clock:
+    user.mouse_move_by_direction(user.clocktime_direction, user.motion_distance_descriptor)
+    user.mouse_show_cursor()
+
+
+#-- Move using a Virtual Grid of the Screen and a Grid Cell Index
+
+# Example: roam quad 3
+roam <user.grid_descriptor> <number>:
+    user.mouse_move_by_grid_index(user.grid_descriptor, number)
+    user.mouse_show_cursor()
+
+
+# from community/./plugin/mouse/mouse.py
+roam center: user.mouse_move_center_active_window()
